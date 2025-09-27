@@ -1,0 +1,29 @@
+{
+  "name": "photobooth-pro",
+  "version": "2.0.0",
+  "description": "Modern Photo Booth with 3D animations, glassmorphism UI, and professional photo processing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "photobooth",
+    "camera",
+    "photos",
+    "webcam",
+    "3d-animations",
+    "glassmorphism",
+    "modern-ui"
+  ],
+  "author": "Photo Booth Pro",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "local"
+  }
+}

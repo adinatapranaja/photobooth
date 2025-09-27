@@ -1,0 +1,21 @@
+# Protect photos directory
+# Allow image files to be viewed but prevent directory listing
+
+Options -Indexes
+
+# Allow access to image files
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Deny access to other file types
+<FilesMatch "^.*$">
+    Order deny,allow
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(jpg|jpeg|png|gif)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
