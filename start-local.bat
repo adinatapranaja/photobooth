@@ -8,8 +8,8 @@ echo ==============================================
 REM Check if Node.js is installed
 where node >nul 2>nul
 if %errorlevel% neq 0 (
-    echo ❌ Node.js is not installed!
-    echo 💡 Please install Node.js from: https://nodejs.org/
+    echo Node.js is not installed!
+    echo Please install Node.js from: https://nodejs.org/
     echo.
     echo Quick install: Download from nodejs.org and run installer
     pause
@@ -18,7 +18,7 @@ if %errorlevel% neq 0 (
 
 REM Check Node.js version
 for /f "tokens=*" %%i in ('node --version') do set NODE_VERSION=%%i
-echo ✅ Node.js found: %NODE_VERSION%
+echo Node.js found: %NODE_VERSION%
 
 REM Create photos directory if it doesn't exist
 if not exist "photos" (
@@ -27,17 +27,17 @@ if not exist "photos" (
 )
 
 REM Start the server
-echo 🚀 Starting Photo Booth Pro server...
-echo 📍 Server will be available at: http://localhost:3000
+echo Starting Photo Booth Pro server...
+echo Server will be available at: http://localhost:3000
 echo.
-echo 🎯 Features:
-echo • 🌟 3D Background Animations
-echo • 🌙 Dark/Light Theme Toggle
-echo • 📸 Professional Photo Capture
-echo • 💾 Real-time Photo Saving
-echo • 📱 Mobile Responsive Design
+echo Features:
+echo • 3D Background Animations
+echo • Dark/Light Theme Toggle
+echo • Professional Photo Capture
+echo • Real-time Photo Saving
+echo • Mobile Responsive Design
 echo.
-echo 💡 Press Ctrl+C to stop the server
+echo Press Ctrl+C to stop the server
 echo.
 
 REM Start Node.js server

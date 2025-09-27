@@ -734,13 +734,96 @@ body {
     color: white;
 }
 
-/* Frame styles */
-.frame1 { border: 4px solid #8B4513; background: linear-gradient(45deg, #d2b48c, #deb887); }
-.frame2 { border: 4px solid #FF69B4; background: linear-gradient(45deg, #ffb6c1, #ffc0cb); border-radius: 30px; }
-.frame3 { border: 4px solid #FFD700; background: linear-gradient(45deg, #fff8dc, #ffffe0); }
-.frame4 { border: 4px solid #98FB98; background: linear-gradient(45deg, #f0fff0, #f5fffa); border-radius: 20px; }
-.frame5 { border: 4px solid #FF4500; background: linear-gradient(45deg, #ffe4e1, #ffa07a); }
-.frame6 { border: 4px solid #8A2BE2; background: linear-gradient(45deg, #e6e6fa, #dda0dd); border-radius: 15px; }
+/* Enhanced Frame styles with modern gradients and effects */
+.frame1 {
+    border: 8px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(45deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1) border-box;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame2 {
+    border: 6px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c) border-box;
+    border-radius: 40px;
+    box-shadow: 0 10px 40px rgba(118, 75, 162, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame3 {
+    border: 5px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(90deg, #ffd89b, #19547b, #ffd89b, #19547b) border-box;
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(255, 216, 155, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame4 {
+    border: 7px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(60deg, #96fbc4, #f9f047, #96fbc4, #f9f047) border-box;
+    border-radius: 25px;
+    box-shadow: 0 12px 35px rgba(150, 251, 196, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame5 {
+    border: 8px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                conic-gradient(from 0deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e) border-box;
+    border-radius: 20px;
+    box-shadow: 0 15px 45px rgba(255, 154, 158, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.frame6 {
+    border: 6px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(225deg, #a8edea, #fed6e3, #a8edea, #fed6e3) border-box;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(168, 237, 234, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Additional special frames for enhanced preview */
+.vintage {
+    border: 12px solid #8B4513;
+    background: linear-gradient(135deg, #d2b48c, #deb887);
+    border-radius: 10px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.3), 0 8px 25px rgba(139, 69, 19, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.neon {
+    border: 4px solid #00ffff;
+    background: linear-gradient(white, white);
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00ffff, inset 0 0 15px rgba(0,255,255,0.1);
+    animation: neonGlow 2s ease-in-out infinite alternate;
+    position: relative;
+    overflow: hidden;
+}
+
+.galaxy {
+    border: 8px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                radial-gradient(circle at 30% 40%, #667eea 0%, #764ba2 50%, #f093fb 100%) border-box;
+    border-radius: 18px;
+    box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+    position: relative;
+    overflow: hidden;
+}
 
 /* Generate section */
 .generate-section {
@@ -964,6 +1047,44 @@ body {
     100% {
         transform: translateY(-10px) rotate(360deg);
         opacity: 0;
+    }
+}
+
+@keyframes neonGlow {
+    0% {
+        box-shadow: 0 0 15px #00ffff, inset 0 0 15px rgba(0,255,255,0.1);
+        border-color: #00ffff;
+    }
+    100% {
+        box-shadow: 0 0 25px #00ffff, 0 0 35px #00ffff, inset 0 0 25px rgba(0,255,255,0.2);
+        border-color: #00aaff;
+    }
+}
+
+@keyframes frameShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes borderRotate {
+    0% {
+        background: linear-gradient(0deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1);
+    }
+    25% {
+        background: linear-gradient(90deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1);
+    }
+    50% {
+        background: linear-gradient(180deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1);
+    }
+    75% {
+        background: linear-gradient(270deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1);
+    }
+    100% {
+        background: linear-gradient(360deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1);
     }
 }
 

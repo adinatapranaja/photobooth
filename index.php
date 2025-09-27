@@ -357,8 +357,8 @@
                                 </svg>
                             </div>
                             <div class="frame-info">
-                                <span class="frame-name">Classic</span>
-                                <span class="frame-desc">Traditional border</span>
+                                <span class="frame-name">Rainbow</span>
+                                <span class="frame-desc">Colorful gradient border</span>
                             </div>
                         </div>
                         <div class="frame-option glass-card" data-frame="frame2">
@@ -368,8 +368,8 @@
                                 </svg>
                             </div>
                             <div class="frame-info">
-                                <span class="frame-name">Romance</span>
-                                <span class="frame-desc">Hearts design</span>
+                                <span class="frame-name">Dreamscape</span>
+                                <span class="frame-desc">Purple pink gradient</span>
                             </div>
                         </div>
                         <div class="frame-option glass-card" data-frame="frame3">
@@ -379,8 +379,8 @@
                                 </svg>
                             </div>
                             <div class="frame-info">
-                                <span class="frame-name">Stellar</span>
-                                <span class="frame-desc">Star pattern</span>
+                                <span class="frame-name">Golden</span>
+                                <span class="frame-desc">Gold & navy stripes</span>
                             </div>
                         </div>
                         <div class="frame-option glass-card" data-frame="frame4">
@@ -391,7 +391,7 @@
                             </div>
                             <div class="frame-info">
                                 <span class="frame-name">Nature</span>
-                                <span class="frame-desc">Floral design</span>
+                                <span class="frame-desc">Fresh green & yellow</span>
                             </div>
                         </div>
                         <div class="frame-option glass-card" data-frame="frame5">
@@ -404,8 +404,8 @@
                                 </svg>
                             </div>
                             <div class="frame-info">
-                                <span class="frame-name">Party</span>
-                                <span class="frame-desc">Celebration style</span>
+                                <span class="frame-name">Sweet</span>
+                                <span class="frame-desc">Pink cotton candy</span>
                             </div>
                         </div>
                         <div class="frame-option glass-card" data-frame="frame6">
@@ -417,8 +417,8 @@
                                 </svg>
                             </div>
                             <div class="frame-info">
-                                <span class="frame-name">Vintage</span>
-                                <span class="frame-desc">Retro camera style</span>
+                                <span class="frame-name">Aqua Dream</span>
+                                <span class="frame-desc">Teal & pink blend</span>
                             </div>
                         </div>
                     </div>

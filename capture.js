@@ -61,12 +61,15 @@ class PhotoBooth {
      * Setup all event listeners for UI interactions
      */
     setupEventListeners() {
-        // Photo count selection
-        document.querySelectorAll('.count-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.photoCount = parseInt(e.target.dataset.count);
+        // Photo count selection with improved event handling
+        this.setupPhotoCountButtons();
+
+        // Layout selection
+        document.querySelectorAll('.layout-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                document.querySelectorAll('.layout-option').forEach(o => o.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+                this.selectedLayout = e.currentTarget.dataset.layout;
             });
         });
 
@@ -122,18 +125,171 @@ class PhotoBooth {
     }
 
     /**
+     * Setup photo count button event listeners with improved error handling
+     */
+    setupPhotoCountButtons() {
+        const countButtons = document.querySelectorAll('.count-btn');
+
+        // Remove any existing event listeners to prevent duplicates
+        countButtons.forEach(button => {
+            // Clone and replace to remove all event listeners
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+        });
+
+        // Get fresh references to the new buttons
+        const freshCountButtons = document.querySelectorAll('.count-btn');
+
+        freshCountButtons.forEach(button => {
+            // Add click event with error handling
+            button.addEventListener('click', (e) => {
+                try {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Prevent double clicks during animations
+                    if (this.isAnimating || button.classList.contains('disabled')) {
+                        return;
+                    }
+
+                    // Remove active class from all buttons
+                    freshCountButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.style.transform = '';
+                    });
+
+                    // Add active class to clicked button
+                    button.classList.add('active');
+
+                    // Get photo count from data attribute
+                    const count = parseInt(button.dataset.count);
+
+                    if (isNaN(count) || count < 1 || count > 4) {
+                        console.error('Invalid photo count:', count);
+                        return;
+                    }
+
+                    // Update photo count
+                    this.photoCount = count;
+
+                    // Animate button press
+                    button.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        button.style.transform = 'scale(1)';
+                    }, 150);
+
+                    // Update UI text if needed
+                    const sessionText = document.querySelector('.session-info');
+                    if (sessionText) {
+                        sessionText.textContent = `${count} photo${count > 1 ? 's' : ''}`;
+                    }
+
+                    console.log(`Photo count selected: ${count}`);
+
+                } catch (error) {
+                    console.error('Error in photo count button click:', error);
+
+                    // Reset to default if error occurs
+                    this.photoCount = 1;
+                    freshCountButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.count-btn[data-count="1"]')?.classList.add('active');
+                }
+            });
+
+            // Add touch event for mobile devices
+            button.addEventListener('touchstart', (e) => {
+                if (!this.isAnimating) {
+                    button.style.transform = 'scale(0.95)';
+                }
+            }, { passive: true });
+
+            button.addEventListener('touchend', (e) => {
+                if (!this.isAnimating) {
+                    setTimeout(() => {
+                        button.style.transform = 'scale(1)';
+                    }, 100);
+                }
+            }, { passive: true });
+        });
+
+        // Ensure default selection
+        const defaultButton = document.querySelector('.count-btn[data-count="1"]');
+        if (defaultButton && !document.querySelector('.count-btn.active')) {
+            defaultButton.classList.add('active');
+            this.photoCount = 1;
+        }
+    }
+
+    /**
      * Setup frame images (CSS-based frames for demo)
      */
     setupFrameImages() {
-        // Frame images will be CSS-based for this demo
-        // In production, you would load actual PNG files from frames/ folder
+        // Enhanced CSS-based frames with attractive designs
         this.frameStyles = {
-            'frame1': 'border: 8px solid #8B4513; border-radius: 10px;',
-            'frame2': 'border: 8px solid #FF69B4; border-radius: 50px;',
-            'frame3': 'border: 8px solid #FFD700; border-radius: 20px;',
-            'frame4': 'border: 8px solid #98FB98; border-radius: 30px;',
-            'frame5': 'border: 8px solid #FF4500; border-radius: 15px;',
-            'frame6': 'border: 8px solid #8A2BE2; border-radius: 25px;'
+            'frame1': `
+                border: 12px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           linear-gradient(45deg, #ff6b6b, #ffd93d, #4ecdc4, #45b7d1) border-box;
+                border-radius: 20px;
+                box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+            `,
+            'frame2': `
+                border: 10px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           linear-gradient(135deg, #667eea, #764ba2, #f093fb, #f5576c) border-box;
+                border-radius: 50px;
+                box-shadow: 0 10px 40px rgba(118, 75, 162, 0.4);
+            `,
+            'frame3': `
+                border: 8px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           linear-gradient(90deg, #ffd89b, #19547b, #ffd89b, #19547b) border-box;
+                border-radius: 15px;
+                box-shadow: 0 6px 25px rgba(255, 216, 155, 0.5);
+                position: relative;
+            `,
+            'frame4': `
+                border: 14px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           linear-gradient(60deg, #96fbc4, #f9f047, #96fbc4, #f9f047) border-box;
+                border-radius: 30px;
+                box-shadow: 0 12px 35px rgba(150, 251, 196, 0.4);
+            `,
+            'frame5': `
+                border: 16px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           conic-gradient(from 0deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e) border-box;
+                border-radius: 25px;
+                box-shadow: 0 15px 45px rgba(255, 154, 158, 0.5);
+            `,
+            'frame6': `
+                border: 10px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           linear-gradient(225deg, #a8edea, #fed6e3, #a8edea, #fed6e3) border-box;
+                border-radius: 40px;
+                box-shadow: 0 8px 30px rgba(168, 237, 234, 0.6);
+            `,
+            'vintage': `
+                border: 20px solid #8B4513;
+                background: linear-gradient(135deg, #d2b48c, #deb887);
+                border-radius: 10px;
+                box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 0 10px 30px rgba(139, 69, 19, 0.4);
+                position: relative;
+            `,
+            'neon': `
+                border: 6px solid #00ffff;
+                background: linear-gradient(white, white);
+                border-radius: 15px;
+                box-shadow: 0 0 20px #00ffff, inset 0 0 20px rgba(0,255,255,0.1);
+                animation: neonGlow 2s ease-in-out infinite alternate;
+            `,
+            'galaxy': `
+                border: 12px solid transparent;
+                background: linear-gradient(white, white) padding-box,
+                           radial-gradient(circle at 30% 40%, #667eea 0%, #764ba2 50%, #f093fb 100%) border-box;
+                border-radius: 20px;
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            `
         };
     }
 
@@ -419,60 +575,179 @@ class PhotoBooth {
      * Apply frame overlay to a photo position
      */
     applyFrame(x, y, w, h) {
-        // Simple frame implementation using canvas drawing
-        // In production, you would load and draw actual PNG frame images
+        const ctx = this.finalCtx;
+        const frameWidth = 16;
 
-        this.finalCtx.strokeStyle = this.getFrameColor();
-        this.finalCtx.lineWidth = 12;
-        this.finalCtx.strokeRect(x + 6, y + 6, w - 12, h - 12);
+        // Save current state
+        ctx.save();
 
-        // Add decorative elements based on frame type
-        if (this.selectedFrame === 'frame2') { // Hearts
-            this.drawHearts(x, y, w, h);
-        } else if (this.selectedFrame === 'frame3') { // Stars
-            this.drawStars(x, y, w, h);
+        switch(this.selectedFrame) {
+            case 'frame1': // Rainbow frame
+                this.drawRainbowFrame(ctx, x, y, w, h, frameWidth);
+                break;
+            case 'frame2': // Dreamscape frame
+                this.drawDreamscapeFrame(ctx, x, y, w, h, frameWidth);
+                break;
+            case 'frame3': // Golden frame
+                this.drawGoldenFrame(ctx, x, y, w, h, frameWidth);
+                break;
+            case 'frame4': // Nature frame
+                this.drawNatureFrame(ctx, x, y, w, h, frameWidth);
+                break;
+            case 'frame5': // Sweet frame
+                this.drawSweetFrame(ctx, x, y, w, h, frameWidth);
+                break;
+            case 'frame6': // Aqua Dream frame
+                this.drawAquaDreamFrame(ctx, x, y, w, h, frameWidth);
+                break;
+        }
+
+        // Restore state
+        ctx.restore();
+    }
+
+    /**
+     * Draw Rainbow gradient frame
+     */
+    drawRainbowFrame(ctx, x, y, w, h, frameWidth) {
+        const gradient = ctx.createLinearGradient(x, y, x + w, y + h);
+        gradient.addColorStop(0, '#ff6b6b');
+        gradient.addColorStop(0.25, '#ffd93d');
+        gradient.addColorStop(0.5, '#4ecdc4');
+        gradient.addColorStop(0.75, '#45b7d1');
+        gradient.addColorStop(1, '#ff6b6b');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = frameWidth;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+
+        // Add inner shadow effect
+        ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x + frameWidth - 1, y + frameWidth - 1, w - 2*frameWidth + 2, h - 2*frameWidth + 2);
+    }
+
+    /**
+     * Draw Dreamscape gradient frame
+     */
+    drawDreamscapeFrame(ctx, x, y, w, h, frameWidth) {
+        const gradient = ctx.createLinearGradient(x, y, x + w, y + h);
+        gradient.addColorStop(0, '#667eea');
+        gradient.addColorStop(0.25, '#764ba2');
+        gradient.addColorStop(0.5, '#f093fb');
+        gradient.addColorStop(1, '#f5576c');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = frameWidth;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+
+        // Add soft glow effect
+        ctx.shadowColor = '#764ba2';
+        ctx.shadowBlur = 8;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+        ctx.shadowBlur = 0;
+    }
+
+    /**
+     * Draw Golden striped frame
+     */
+    drawGoldenFrame(ctx, x, y, w, h, frameWidth) {
+        // Create striped pattern effect
+        for (let i = 0; i < frameWidth; i += 4) {
+            const color = i % 8 === 0 ? '#ffd89b' : '#19547b';
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x + i, y + i, w - 2*i, h - 2*i);
+        }
+
+        // Add golden highlights
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+        ctx.strokeRect(x + frameWidth - 2, y + frameWidth - 2, w - 2*frameWidth + 4, h - 2*frameWidth + 4);
+    }
+
+    /**
+     * Draw Nature gradient frame
+     */
+    drawNatureFrame(ctx, x, y, w, h, frameWidth) {
+        const gradient = ctx.createLinearGradient(x, y, x + w, y);
+        gradient.addColorStop(0, '#96fbc4');
+        gradient.addColorStop(0.5, '#f9f047');
+        gradient.addColorStop(1, '#96fbc4');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = frameWidth;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+
+        // Add natural decorative dots
+        ctx.fillStyle = '#4CAF50';
+        const dotSize = 4;
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const dotX = x + w/2 + Math.cos(angle) * (w/2 - frameWidth/2);
+            const dotY = y + h/2 + Math.sin(angle) * (h/2 - frameWidth/2);
+            ctx.beginPath();
+            ctx.arc(dotX, dotY, dotSize, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
 
     /**
-     * Get frame color based on selected frame
+     * Draw Sweet conic gradient frame
      */
-    getFrameColor() {
-        const colors = {
-            'frame1': '#8B4513',
-            'frame2': '#FF69B4',
-            'frame3': '#FFD700',
-            'frame4': '#98FB98',
-            'frame5': '#FF4500',
-            'frame6': '#8A2BE2'
-        };
-        return colors[this.selectedFrame] || '#000000';
+    drawSweetFrame(ctx, x, y, w, h, frameWidth) {
+        // Simulate conic gradient with multiple gradients
+        const centerX = x + w/2;
+        const centerY = y + h/2;
+
+        // Create radial gradient for sweet effect
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, Math.max(w, h)/2);
+        gradient.addColorStop(0, '#ff9a9e');
+        gradient.addColorStop(0.5, '#fecfef');
+        gradient.addColorStop(1, '#ff9a9e');
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = frameWidth;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+
+        // Add sweet sparkle effects
+        ctx.fillStyle = '#FFB6C1';
+        for (let i = 0; i < 12; i++) {
+            const sparkleX = x + frameWidth + Math.random() * (w - 2*frameWidth);
+            const sparkleY = y + frameWidth + Math.random() * (h - 2*frameWidth);
+            ctx.beginPath();
+            ctx.arc(sparkleX, sparkleY, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
 
     /**
-     * Draw heart decorations for heart frame
+     * Draw Aqua Dream gradient frame
      */
-    drawHearts(x, y, w, h) {
-        this.finalCtx.fillStyle = '#FF69B4';
-        // Simple heart shapes at corners
-        const heartSize = 20;
-        this.finalCtx.fillRect(x + 10, y + 10, heartSize, heartSize);
-        this.finalCtx.fillRect(x + w - 30, y + 10, heartSize, heartSize);
-        this.finalCtx.fillRect(x + 10, y + h - 30, heartSize, heartSize);
-        this.finalCtx.fillRect(x + w - 30, y + h - 30, heartSize, heartSize);
-    }
+    drawAquaDreamFrame(ctx, x, y, w, h, frameWidth) {
+        const gradient = ctx.createLinearGradient(x, y + h, x + w, y);
+        gradient.addColorStop(0, '#a8edea');
+        gradient.addColorStop(0.5, '#fed6e3');
+        gradient.addColorStop(1, '#a8edea');
 
-    /**
-     * Draw star decorations for star frame
-     */
-    drawStars(x, y, w, h) {
-        this.finalCtx.fillStyle = '#FFD700';
-        // Simple star shapes at corners
-        const starSize = 15;
-        this.finalCtx.fillRect(x + 15, y + 15, starSize, starSize);
-        this.finalCtx.fillRect(x + w - 30, y + 15, starSize, starSize);
-        this.finalCtx.fillRect(x + 15, y + h - 30, starSize, starSize);
-        this.finalCtx.fillRect(x + w - 30, y + h - 30, starSize, starSize);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = frameWidth;
+        ctx.strokeRect(x + frameWidth/2, y + frameWidth/2, w - frameWidth, h - frameWidth);
+
+        // Add wave-like pattern
+        ctx.strokeStyle = 'rgba(168, 237, 234, 0.6)';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 3; i++) {
+            const waveY = y + frameWidth + (i * (h - 2*frameWidth) / 3);
+            ctx.beginPath();
+            ctx.moveTo(x + frameWidth, waveY);
+            for (let wx = x + frameWidth; wx < x + w - frameWidth; wx += 10) {
+                const waveHeight = Math.sin((wx - x) / 20) * 8;
+                ctx.lineTo(wx, waveY + waveHeight);
+            }
+            ctx.stroke();
+        }
     }
 
     /**

@@ -1,38 +1,38 @@
-# Photo Booth Pro 🎉
+# Photo Booth 🎉
 
 A modern, feature-rich web-based photo booth application with stunning 3D animations, glassmorphism UI, and professional-grade effects. Built for XAMPP deployment with cutting-edge web technologies.
 
-## ✨ Enhanced Features
+## Enhanced Features
 
-### 🎨 Modern UI/UX
+### Modern UI/UX
 - **Glassmorphism Design**: Transparent cards with backdrop blur effects
 - **Dark/Light Theme**: Toggle between themes with smooth transitions
 - **3D Background Animations**: Three different animated backgrounds:
-  - 🌟 Floating Particles
+  - Floating Particles
   - 🌊 Gradient Waves
   - 🧊 Rotating Cubes
 - **Smooth Page Transitions**: Slide animations between screens
 - **Interactive Elements**: Hover effects, glow buttons, and micro-interactions
 
-### 📸 Photo Capture
+### Photo Capture
 - **Enhanced Countdown**: Animated circles with color transitions and flash effects
 - **Real-time Preview**: Mirror-effect video with gradient overlays
 - **Multiple Sessions**: Choose 1-4 photos with elegant selection cards
 - **Professional Capture**: High-quality canvas-based photo processing
 
-### 🖼️ Layout & Frames
+### Layout & Frames
 - **Smart Layouts**: Auto-suggested layouts based on photo count
 - **Frame Collection**: 6 beautifully designed frames with emoji previews
 - **Live Preview**: Interactive layout and frame selection
 - **Smooth Generation**: 3D loading spinner during collage creation
 
-### 🖨️ Final Output
+### Final Output
 - **Polaroid Aesthetic**: Instagram-style photo presentation
 - **Auto-dating**: Timestamps on photo captions
 - **Multiple Export Options**: Download, server save, and direct printing
 - **Responsive Design**: Perfect on desktop, tablet, and mobile
 
-### 🎭 Advanced Animations
+### Advanced Animations
 - **GPU-Optimized**: Hardware-accelerated 3D graphics
 - **Reduced Motion Support**: Accessibility-friendly fallbacks
 - **Smooth Transitions**: Cubic-bezier easing for professional feel
@@ -88,12 +88,12 @@ potobooth/
 
 ## How to Use
 
-### 🚀 Getting Started
+### Getting Started
 1. **Theme Selection**: Use the theme toggle (☀️/🌙) in top-right to switch between light/dark modes
 2. **Background Animation**: Choose your preferred animation style with the controls in top-left:
-   - 🌟 Floating Particles
-   - 🌊 Gradient Waves
-   - 🧊 Rotating Cubes
+   - Floating Particles
+   - Gradient Waves
+   - Rotating Cubes
 
 ### 📸 Photo Session
 1. **Camera Setup**:
