@@ -34,37 +34,70 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Check if image data was sent
-if (!isset($_POST['image']) || empty($_POST['image'])) {
+// Accept either a data URL in POST['image'] OR a binary upload in FILES['image_file']
+$binary_data = false;
+$mime_type = null;
+
+// Priority 1: binary file upload via multipart/form-data (field: image_file)
+if (isset($_FILES['image_file']) && is_uploaded_file($_FILES['image_file']['tmp_name'])) {
+    $file = $_FILES['image_file'];
+
+    // Basic upload error check
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode(['success' => false, 'error' => 'File upload error']);
+        exit;
+    }
+
+    // Size check
+    if ($file['size'] > $max_file_size) {
+        echo json_encode(['success' => false, 'error' => 'Image too large']);
+        exit;
+    }
+
+    // Detect MIME type from file contents
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $detected = $finfo->file($file['tmp_name']);
+    if (!in_array($detected, $allowed_types)) {
+        echo json_encode(['success' => false, 'error' => 'Unsupported image type']);
+        exit;
+    }
+
+    $mime_type = $detected;
+    $binary_data = file_get_contents($file['tmp_name']);
+}
+
+// Priority 2: data URL sent in a form field named 'image' (existing behavior)
+elseif (isset($_POST['image']) && !empty($_POST['image'])) {
+    $image_data = $_POST['image'];
+
+    // Validate data URL format
+    if (!preg_match('/^data:image\/(jpeg|png);base64,/', $image_data)) {
+        echo json_encode(['success' => false, 'error' => 'Invalid image format']);
+        exit;
+    }
+
+    // Extract image type and base64 data
+    preg_match('/^data:image\/(jpeg|png);base64,(.+)$/', $image_data, $matches);
+    $image_type = $matches[1];
+    $base64_data = $matches[2];
+
+    // Validate image type
+    $mime_type = 'image/' . $image_type;
+    if (!in_array($mime_type, $allowed_types)) {
+        echo json_encode(['success' => false, 'error' => 'Unsupported image type']);
+        exit;
+    }
+
+    // Decode base64 data
+    $binary_data = base64_decode($base64_data);
+
+    if ($binary_data === false) {
+        echo json_encode(['success' => false, 'error' => 'Invalid base64 data']);
+        exit;
+    }
+}
+else {
     echo json_encode(['success' => false, 'error' => 'No image data received']);
-    exit;
-}
-
-$image_data = $_POST['image'];
-
-// Validate data URL format
-if (!preg_match('/^data:image\/(jpeg|png);base64,/', $image_data)) {
-    echo json_encode(['success' => false, 'error' => 'Invalid image format']);
-    exit;
-}
-
-// Extract image type and base64 data
-preg_match('/^data:image\/(jpeg|png);base64,(.+)$/', $image_data, $matches);
-$image_type = $matches[1];
-$base64_data = $matches[2];
-
-// Validate image type
-$mime_type = 'image/' . $image_type;
-if (!in_array($mime_type, $allowed_types)) {
-    echo json_encode(['success' => false, 'error' => 'Unsupported image type']);
-    exit;
-}
-
-// Decode base64 data
-$binary_data = base64_decode($base64_data);
-
-if ($binary_data === false) {
-    echo json_encode(['success' => false, 'error' => 'Invalid base64 data']);
     exit;
 }
 
