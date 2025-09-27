@@ -468,3 +468,18 @@ Ready to create amazing memories? **Deploy now and start capturing! 📸✨**
 ---
 
 *Built with ❤️ using modern web technologies. For support, feature requests, or customization services, check the troubleshooting section above.*
+
+## Vercel Deployment (zero changes to app files)
+
+This repo includes a tiny Vercel shim so you can deploy the app without changing `index.php`, `capture.js`, or `save.php`.
+
+- Files added:
+    - `vercel.json` — routes `/save.php` to a serverless function
+    - `api/save.js` — Node serverless function that accepts the same FormData payload and saves images to `/tmp/photos` on Vercel (ephemeral)
+    - `VERCEL-DEPLOYMENT.md` — detailed notes and caveats
+
+Notes:
+- Vercel's filesystem is ephemeral; files under `/tmp` won't persist long-term or across deployments. For production, use S3 or another external storage and update `api/save.js` accordingly.
+- The client continues to post to `/save.php` so no code changes to your frontend are required.
+
+See `VERCEL-DEPLOYMENT.md` for deployment steps and recommended next steps.
